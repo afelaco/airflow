@@ -1,6 +1,6 @@
 # airflow
 
-## pre-commit
+# pre-commit
 
 ```bash
 uv pip install pre-commit
