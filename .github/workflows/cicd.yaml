@@ -61,7 +61,7 @@ jobs:
   # ---- Build & Upload Python Wheel ----
   # This job builds the Python wheel and uploads it as an artifact.
   build-and-upload-wheel:
-    if: github.event_name == 'push'
+#    if: github.event_name == 'push'
     name: Build & Upload Python Wheel
     runs-on: ubuntu-latest
     outputs:
@@ -85,7 +85,6 @@ jobs:
 
       # Publish the wheel file to PyPI
       - name: Publish Wheel to PyPI
-        if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
