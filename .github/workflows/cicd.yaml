@@ -66,6 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
+      release_version: ${{ steps.export_version.outputs.release_version }}
     steps:
       # Checkout the repository
       - name: Checkout Repository
@@ -83,9 +84,16 @@ jobs:
 
       # Run semantic-release to handle versioning and changelog
       - name: Run semantic-release
+        id: semantic
         run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Save the release version for downstream jobs
+      - name: Export Release Version
+        id: export_version
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: echo "release_version=${{ steps.semantic.outputs.release_version }}" >> $GITHUB_OUTPUT
 
       # Install uv
       - name: Install uv
@@ -120,6 +128,7 @@ jobs:
       # Define the Docker image name and wheel file name
       IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/airflow
       WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_file }}
+      RELEASE_VERSION: ${{ needs.build-and-upload-wheel.outputs.release_version}}
     steps:
       # Checkout the repository
       - name: Checkout Repository
@@ -145,6 +154,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ env.RELEASE_VERSION }}
+            type=raw,value=latest
 
       # Build and push the Docker image to Docker Hub
       - name: Build & Push Docker Image

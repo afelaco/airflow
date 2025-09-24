@@ -16,12 +16,28 @@
       }
     ],
     [
+      "semantic-release-version-file",
+      {
+        "path": "package.json",
+        "regex": "\"version\": \".*\"",
+        "replace": "\"version\": \"${version}\""
+      }
+    ],
+    [
+      "semantic-release-version-file",
+      {
+        "path": ".release-version",
+        "regex": ".*",
+        "replace": "${version}"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
-          "VERSION",
           "package.json",
-          "pyproject.toml"
+          "pyproject.toml",
+          ".release-version"
         ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
