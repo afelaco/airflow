@@ -84,16 +84,13 @@ jobs:
 
       # Run semantic-release to handle versioning and changelog
       - name: Run semantic-release
-        id: semantic
         run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Save the release version for downstream jobs
+      # Export the release version for downstream jobs
       - name: Export Release Version
-        id: export_version
-        if: steps.semantic.outputs.new_release_published == 'true'
-        run: echo "release_version=${{ steps.semantic.outputs.release_version }}" >> $GITHUB_OUTPUT
+        run: echo "release_version=$(cat .release-version)" >> $GITHUB_OUTPUT
 
       # Install uv
       - name: Install uv
@@ -107,12 +104,14 @@ jobs:
           wheel_file=$(basename dist/*.whl)
           echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
 
-      # Upload the wheel file as an artifact
-      - name: Upload Wheel Artifact
-        uses: actions/upload-artifact@v4
+      # Publish the wheel file to PyPI
+      - name: Publish to PyPI
+        if: github.ref == 'refs/heads/main'
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          name: python-wheel
-          path: dist/${{ steps.build_wheel.outputs.wheel_file }}
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
 
   # ---- Build & Push Docker Image ----
   # This job builds and publishes the Docker image to Docker Hub.
