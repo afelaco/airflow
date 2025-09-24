@@ -83,12 +83,13 @@ jobs:
           wheel_file=$(basename dist/*.whl)
           echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
 
-      # Upload the wheel file as an artifact
-      - name: Upload Wheel Artifact
-        uses: actions/upload-artifact@v4
+      # Publish the wheel file to PyPI
+      - name: Publish Wheel to PyPI
+        if: github.ref == 'refs/heads/main'
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          name: python-wheel
-          path: dist/${{ steps.build_wheel.outputs.wheel_file }}
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   # ---- Build & Push Docker Image ----
   # This job builds and publishes the Docker image to Docker Hub.
