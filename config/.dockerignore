@@ -1,6 +1,6 @@
 # Version control
 .git
-.github
+../.github
 
 # Local dev / IDE
 .venv
