@@ -1,0 +1,20 @@
+# Version control
+.git
+.github
+
+# Local dev / IDE
+.venv
+.idea
+
+# Caches & artifacts
+.mypy_cache
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+*.pyo
+
+# Others
+.dockerignore
+.gitignore
+.python-version
