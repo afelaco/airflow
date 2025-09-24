@@ -67,16 +67,25 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
     steps:
-      # Set up Node.js environment
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci        # installs dev dependencies
-      - run: npm run release
-
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      # Set up Node.js environment
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install Node project dependencies
+      - name: Install Node dependencies
+        run: npm ci
+
+      # Run semantic-release to handle versioning and changelog
+      - name: Run semantic-release
+        run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Install uv
       - name: Install uv
