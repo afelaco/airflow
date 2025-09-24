@@ -67,6 +67,13 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
     steps:
+      # Set up Node.js environment
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci        # installs dev dependencies
+      - run: npm run release
+
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
