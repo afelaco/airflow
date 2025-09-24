@@ -5,6 +5,26 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/github"
+    "@semantic-release/github",
+    "@semantic-release/npm",
+    [
+      "semantic-release-version-file",
+      {
+        "path": "pyproject.toml",
+        "regex": "version\\s*=\\s*\".*\"",
+        "replace": "version = \"${version}\""
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "VERSION",
+          "package.json",
+          "pyproject.toml"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
   ]
 }
