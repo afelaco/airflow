@@ -8,7 +8,6 @@ on:
 jobs:
   python-wheel-upload:
     name: Build & Upload Python Wheel
-    needs: build-and-upload-wheel
     runs-on: ubuntu-latest
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
@@ -34,6 +33,7 @@ jobs:
 
   docker-build-push:
     name: Build & Push Docker Image
+    needs: python-wheel-upload
     runs-on: ubuntu-latest
     permissions:
       contents: read
