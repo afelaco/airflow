@@ -1,9 +1,5 @@
 name: Build & Push Docker Image
 
-env:
-  AIRFLOW_VERSION: "3.0.6"
-  PYTHON_VERSION: "3.12"
-
 on:
   push:
     branches:
@@ -29,11 +25,11 @@ jobs:
           wheel_file=$(basename dist/*.whl)
           echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
 
-      - name: Publish Python Wheel to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Upload Wheel Artifact
+        uses: actions/upload-artifact@v4
         with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          name: python-wheel
+          path: dist/${{ steps.build_wheel.outputs.wheel_file }}
 
   docker-build-push:
     name: Build & Push Docker Image
@@ -42,14 +38,19 @@ jobs:
       contents: read
       packages: write
     env:
+      AIRFLOW_VERSION: "3.0.6"
+      PYTHON_VERSION: "3.12"
       IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/airflow
       WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_file }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Package from GitHub Packages
-        run: uv pip install
+      - name: Download Wheel Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheel
+          path: dist/
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
