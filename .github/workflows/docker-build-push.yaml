@@ -3,15 +3,38 @@ name: Build & Push Docker Image
 env:
   AIRFLOW_VERSION: "3.0.6"
   PYTHON_VERSION: "3.12"
-  REPOSITORY_URL: https://upload.pypi.pkg.github.com/${{ github.repository_owner }}/airflow
 
 on:
-  workflow_run:
-    workflows: [ "Build & Upload Python Wheel" ]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
+  python-wheel-upload:
+    name: Build & Upload Python Wheel
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Build Python Wheel
+        id: build_wheel
+        run: |
+          uv build --wheel
+          wheel_file=$(basename dist/*.whl)
+          echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
+
+      - name: Publish Python Wheel to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
   docker-build-push:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
