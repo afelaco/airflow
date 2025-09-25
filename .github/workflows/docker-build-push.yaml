@@ -33,6 +33,7 @@ jobs:
 
   docker-build-push:
     name: Build & Push Docker Image
+    needs: python-wheel-upload
     runs-on: ubuntu-latest
     permissions:
       contents: read
