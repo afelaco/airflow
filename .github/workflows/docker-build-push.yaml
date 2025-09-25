@@ -10,7 +10,7 @@ jobs:
     name: Build & Upload Python Wheel
     runs-on: ubuntu-latest
     outputs:
-      wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
+      wheel_name: ${{ steps.build_wheel.outputs.wheel_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,14 +22,14 @@ jobs:
         id: build_wheel
         run: |
           uv build --wheel
-          wheel_file=$(basename dist/*.whl)
-          echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
+          wheel_name=$(basename dist/*.whl)
+          echo "wheel_name=$wheel_name" >> $GITHUB_OUTPUT
 
       - name: Upload Wheel Artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-wheel
-          path: dist/${{ steps.build_wheel.outputs.wheel_file }}
+          path: dist/${{ steps.build_wheel.outputs.wheel_name }}
 
   docker-build-push:
     name: Build & Push Docker Image
@@ -42,7 +42,7 @@ jobs:
       AIRFLOW_VERSION: "3.0.6"
       PYTHON_VERSION: "3.12"
       IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/airflow
-      WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_file }}
+      WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -75,4 +75,4 @@ jobs:
           build-args: |
             AIRFLOW_VERSION=${{ env.AIRFLOW_VERSION }}
             PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-            WHEEL_FILE=${{ env.WHEEL_NAME }}
+            WHEEL_NAME=${{ env.WHEEL_NAME }}
