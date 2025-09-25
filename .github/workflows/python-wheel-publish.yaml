@@ -1,0 +1,38 @@
+name: Build & Publish Python Wheel
+
+env:
+  REPOSITORY_URL: https://upload.pypi.pkg.github.com/${{ github.repository_owner }}/airflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  python-wheel-publish:
+    name: Build & Publish Python Wheel
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Build Python Wheel
+        id: build_wheel
+        run: |
+          uv build --wheel
+          wheel_file=$(basename dist/*.whl)
+          echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
+
+      - name: Publish to GitHub Packages
+        env:
+          TWINE_USERNAME: ${{ github.actor }}
+          TWINE_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          twine upload \
+            --repository-url ${{REPOSITORY_URL}} \
+            dist/{{ $steps.build_wheel.outputs.wheel_file }}
