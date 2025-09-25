@@ -4,7 +4,7 @@ env:
   REPOSITORY_URL: https://upload.pypi.pkg.github.com/${{ github.repository_owner }}/airflow
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
