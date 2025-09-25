@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+env:
+  PYTHON_VERSION: "3.12"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-tests:
+    name: Code Quality & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install Dependencies
+        run: uv sync --group dev
+
+      - name: Lint Check
+        run: uv run ruff check .
+
+      - name: Format Check
+        run: uv run ruff format --check .
+
+      - name: Type Check
+        run: uv run mypy .
+
+      - name: Run Tests
+        run: uv run pytest
