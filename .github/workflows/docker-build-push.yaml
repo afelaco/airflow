@@ -12,7 +12,7 @@ on:
 
 jobs:
   docker-build-push:
-    name: Build & Publish Docker Image
+    name: Docker Build & Push
     runs-on: ubuntu-latest
     permissions:
       contents: read

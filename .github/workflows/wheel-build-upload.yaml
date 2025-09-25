@@ -1,4 +1,4 @@
-name: Build & Upload Python Wheel
+name: Wheel Build & Upload
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-upload-wheel:
-    name: Build & Upload Python Wheel
+    name: Wheel Build & Upload
     runs-on: ubuntu-latest
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
