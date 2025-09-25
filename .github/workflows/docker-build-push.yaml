@@ -7,8 +7,8 @@ on:
 
 jobs:
   python-wheel-upload:
-    needs: build-and-upload-wheel
     name: Build & Upload Python Wheel
+    needs: build-and-upload-wheel
     runs-on: ubuntu-latest
     outputs:
       wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
