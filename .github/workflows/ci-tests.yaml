@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Tests
 
 env:
   PYTHON_VERSION: "3.12"
@@ -10,7 +10,7 @@ on:
 
 jobs:
   ci-tests:
-    name: Code Quality & Tests
+    name: CI Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

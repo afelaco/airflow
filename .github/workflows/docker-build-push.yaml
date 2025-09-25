@@ -1,23 +1,45 @@
-name: Docker Build & Push
-
-env:
-  AIRFLOW_VERSION: "3.0.6"
-  PYTHON_VERSION: "3.12"
+name: Build & Push Docker Image
 
 on:
-  workflow_run:
-    workflows: [ "Build & Upload Python Wheel" ]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
+  python-wheel-upload:
+    name: Build & Upload Python Wheel
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_wheel.outputs.wheel_file }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Build Python Wheel
+        id: build_wheel
+        run: |
+          uv build --wheel
+          wheel_file=$(basename dist/*.whl)
+          echo "wheel_file=$wheel_file" >> $GITHUB_OUTPUT
+
+      - name: Upload Wheel Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-wheel
+          path: dist/${{ steps.build_wheel.outputs.wheel_file }}
+
   docker-build-push:
-    name: Build & Publish Docker Image
+    name: Build & Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     env:
+      AIRFLOW_VERSION: "3.0.6"
+      PYTHON_VERSION: "3.12"
       IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/airflow
       WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_file }}
     steps:
