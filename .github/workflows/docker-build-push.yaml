@@ -42,7 +42,7 @@ jobs:
       AIRFLOW_VERSION: "3.0.6"
       PYTHON_VERSION: "3.12"
       IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/airflow
-      WHEEL_NAME: ${{ needs.build-and-upload-wheel.outputs.wheel_name }}
+      WHEEL_NAME: ${{ needs.python-wheel-upload.outputs.wheel_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
