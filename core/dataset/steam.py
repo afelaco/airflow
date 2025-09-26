@@ -1,5 +1,5 @@
-from typing import Any
-from polars import String, Int64, List
+from pandera.polars import DataFrameSchema, Column
+
 from core.dataset import Dataset
 
 
@@ -7,7 +7,7 @@ class SteamDataset(Dataset):
     def __init__(
         self,
         name: str,
-        schema: dict[str, Any],
+        schema: DataFrameSchema,
     ):
         super().__init__(
             name=name,
@@ -21,10 +21,12 @@ class SteamDataset(Dataset):
 
 owned_games = SteamDataset(
     name="owned_games",
-    schema={
-        "appid": Int64,
-        "name": String,
-        "playtime_forever": Int64,
-        "content_descriptorids": List(Int64),
-    },
+    schema=DataFrameSchema(
+        {
+            "appid": Column(int),
+            "name": Column(str),
+            "playtime_forever": Column(int),
+            "content_descriptorids": Column(list[int], nullable=True),
+        }
+    ),
 )

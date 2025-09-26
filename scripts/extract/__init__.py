@@ -37,7 +37,7 @@ class Extract(ABC):
 
     def write_parquet(self, df: pl.DataFrame) -> None:
         # Declare Azure Blob Storage parameters
-        storage_account_name = settings.azure_storage_account_name
+        storage_account_name = "homeautosa"
         container_name = self.dataset.container
         blob_path = self.dataset.get_path()
 

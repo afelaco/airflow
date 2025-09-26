@@ -15,6 +15,7 @@ class SteamApiClient(ApiClient, ApiKeyAuthentication):
 
     def get(self, endpoint: Endpoint, params: dict[str, str]) -> list[dict]:
         data: list = []
+        params = params | {"steamid": settings.steam_id}
         response = self.session.get(
             url=endpoint.url,
             params=params,
