@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from core.api.client.steam import SteamApiClient
 
+from core.api.client.steam import SteamApiClient
 from core.dataset.steam import SteamDataset
 from core.endpoint.steam import SteamEndpoint
 from scripts.extract import Extract

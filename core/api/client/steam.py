@@ -3,6 +3,9 @@ from core.api.client import ApiClient
 from core.config import settings
 
 from core.endpoint import Endpoint
+from core.logger import get_logger
+
+logger = get_logger(name=__name__)
 
 
 class SteamApiClient(ApiClient, ApiKeyAuthentication):
@@ -12,6 +15,7 @@ class SteamApiClient(ApiClient, ApiKeyAuthentication):
 
     def get(self, endpoint: Endpoint, params: dict[str, str]) -> list[dict]:
         data: list = []
+        params = params | {"steamid": settings.steam_id}
         response = self.session.get(
             url=endpoint.url,
             params=params,
@@ -23,33 +27,9 @@ class SteamApiClient(ApiClient, ApiKeyAuthentication):
                 by_alias=True
             )
         )
+        logger.info("%s records read from %s", len(data), response.url)
+
         return data
-        # data = []
-        # page = 0
-        # page_size = 100
-        # url = self.get_url(endpoint_url=endpoint.url)
-        # while True:
-        #     params = {
-        #         "count": page_size,
-        #         "offset": page * page_size,
-        #     }
-        #     headers = self.get_auth_headers()
-        #     response = self.session.get(
-        #         url=url,
-        #         params=params,
-        #         headers=headers,
-        #         timeout=120,
-        #     )
-        #     response.raise_for_status()
-        #     batch = endpoint.response_model.model_validate_json(
-        #         response.content
-        #     ).model_dump(by_alias=True)
-        #     if not batch:
-        #         break
-        #     data.extend(batch)
-        #     logger.info("%s records read from %s", len(data), response.url)
-        #     page += 1
-        # return data
 
     def get_auth_headers(self) -> dict[str, str]:
         return {"x-webapi-key": self.api_key}

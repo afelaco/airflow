@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any
+
+from pandera.polars import DataFrameSchema
 
 
 class Dataset(ABC):
@@ -7,7 +8,7 @@ class Dataset(ABC):
         self,
         name: str,
         container: str,
-        schema: dict[str, Any],
+        schema: DataFrameSchema,
     ):
         self.name = name
         self.container = container
