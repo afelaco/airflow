@@ -17,7 +17,7 @@ class ExtractSteamOwnedGames(ExtractSteam):
         return core.dataset.steam.owned_games
 
     def run(self) -> None:
-        pass
+        self.write_parquet(df=self.get_data())
 
     def get_data(self) -> pl.DataFrame:
         params = {
@@ -35,4 +35,4 @@ class ExtractSteamOwnedGames(ExtractSteam):
 
 
 if __name__ == "__main__":
-    data = ExtractSteamOwnedGames().get_data().to_pandas()
+    ExtractSteamOwnedGames().run()

@@ -3,6 +3,8 @@ from dotenv import find_dotenv
 
 
 class Settings(BaseSettings):
+    azure_storage_account_name: str
+    azure_storage_account_key: str
     steam_api_key: str
     steam_id: str
 
