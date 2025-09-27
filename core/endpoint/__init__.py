@@ -1,9 +1,10 @@
 from abc import ABC
+from dataclasses import dataclass
 
 from pydantic import BaseModel
 
 
+@dataclass
 class Endpoint(ABC):
-    def __init__(self, url: str, response_model: type[BaseModel]):
-        self.url = url
-        self.response_model = response_model
+    url: str
+    response_model: type[BaseModel]

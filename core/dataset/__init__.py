@@ -1,18 +1,20 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Literal
 
 from pandera.polars import DataFrameSchema
 
 
+@dataclass
 class Dataset(ABC):
-    def __init__(
-        self,
-        name: str,
-        container: str,
-        schema: DataFrameSchema,
-    ):
-        self.name = name
-        self.container = container
-        self.schema = schema
+    name: str
+    schema: DataFrameSchema
+    container: str
+    storage_account: Literal[
+        "homeautobronzesa",
+        "homeautosilversa",
+        "homeautogoldsa",
+    ]
 
     @abstractmethod
     def get_path(self) -> str:

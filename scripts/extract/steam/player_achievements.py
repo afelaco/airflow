@@ -7,7 +7,7 @@ from core.endpoint import Endpoint
 from scripts.extract.steam import ExtractSteam
 
 
-class ExtractSteamOwnedGames(ExtractSteam):
+class ExtractSteamPlayerAchievements(ExtractSteam):
     @property
     def endpoint(self) -> Endpoint:
         return core.endpoint.steam.owned_games
@@ -25,8 +25,8 @@ class ExtractSteamOwnedGames(ExtractSteam):
             endpoint=self.endpoint,
             params=params,
         )
-        return pl.DataFrame(data=data)
+        return pl.DataFrame(data=data).pipe(self.dataset.schema.validate)
 
 
 if __name__ == "__main__":
-    ExtractSteamOwnedGames().run()
+    ExtractSteamPlayerAchievements().run()
