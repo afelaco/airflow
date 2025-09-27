@@ -1,21 +1,12 @@
-from pandera.polars import DataFrameSchema
+from dataclasses import dataclass
+from typing import Literal
 
 from core.dataset import Dataset
 
 
+@dataclass
 class BronzeDataset(Dataset):
-    def __init__(
-        self,
-        container: str,
-        name: str,
-        schema: DataFrameSchema,
-    ):
-        super().__init__(
-            storage_account="homeautobronzesa",
-            container=container,
-            name=name,
-            schema=schema,
-        )
+    storage_account: Literal["homeautobronzesa"] = "homeautobronzesa"
 
     def get_path(self) -> str:
         return f"{self.container}/{self.name}.parquet"
