@@ -7,10 +7,10 @@ from dags.steam.task import extract_steam_owned_games
 
 @dag(
     dag_id="steam",
-    description="Extract, transform and load Steam data",
-    tags=["steam", "daily"],
+    description="Steam Data ETL Pipeline",
+    tags=["steam", "weekly"],
     start_date=datetime(2025, 9, 20, tzinfo=UTC),
-    schedule="@daily",
+    schedule="@weekly",
     catchup=False,
     max_active_runs=1,
     max_active_tasks=1,
