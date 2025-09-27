@@ -35,22 +35,18 @@ class Extract(ABC):
         pass
 
     def write_parquet(self, df: pl.DataFrame) -> None:
-        container_name = self.dataset.container
-        blob_path = self.dataset.get_path()
-        path = f"abfss://{container_name}/{blob_path}"
-
+        file = f"abfss://{self.dataset.get_path()}"
         storage_options = {
-            "account_name": "homeautosa",
-            "account_key": get_secret("AZURE-STORAGE-ACCOUNT-KEY"),
+            "account_name": "homeautobronzesa",
+            "account_key": get_secret("BRONZE-LAYER-KEY"),
         }
-
         df.write_parquet(
-            path,
+            file=file,
             storage_options=storage_options,
         )
 
         logger.info(
             "%s records written to %s",
             len(df),
-            path,
+            file,
         )
