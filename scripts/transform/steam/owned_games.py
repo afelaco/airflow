@@ -25,11 +25,11 @@ class TransformSteamOwnedGames(Transform):
         }
 
     def run(self) -> None:
-        self.write_parquet(df=self.get_data())
+        self.output_dataset.write_parquet(df=self.get_data())
 
     def get_data(self) -> pl.DataFrame:
         return (
-            self.read_parquet()
+            self.input_dataset.read_parquet()
             .rename(self.mapping)
             .explode("tag")
             .with_columns(
