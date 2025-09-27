@@ -6,12 +6,14 @@ from pandera.polars import DataFrameSchema
 class Dataset(ABC):
     def __init__(
         self,
-        name: str,
+        storage_account: str,
         container: str,
+        name: str,
         schema: DataFrameSchema,
     ):
-        self.name = name
+        self.storage_account = storage_account
         self.container = container
+        self.name = name
         self.schema = schema
 
     @abstractmethod
