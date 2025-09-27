@@ -17,7 +17,7 @@ class ExtractSteamPlayerAchievements(ExtractSteam):
         return core.dataset.bronze.steam.owned_games
 
     def run(self) -> None:
-        self.write_parquet(df=self.get_data())
+        self.dataset.write_parquet(df=self.get_data())
 
     def get_data(self) -> pl.DataFrame:
         params = {"include_appinfo": "true"}
