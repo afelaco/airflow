@@ -39,7 +39,6 @@ source = { editable = "." }
 dependencies = [
     { name = "azure-identity" },
     { name = "azure-keyvault-secrets" },
-    { name = "azure-storage-blob" },
     { name = "pandera", extra = ["polars"] },
     { name = "polars" },
     { name = "pydantic" },
@@ -61,7 +60,6 @@ dev = [
 requires-dist = [
     { name = "azure-identity", specifier = ">=1.25.0" },
     { name = "azure-keyvault-secrets", specifier = ">=4.10.0" },
-    { name = "azure-storage-blob", specifier = ">=12.26.0" },
     { name = "pandera", extras = ["polars"], specifier = ">=0.26.1" },
     { name = "polars", specifier = ">=1.33.1,<2.0" },
     { name = "pydantic", specifier = ">=2.11.9,<3.0" },
@@ -356,21 +354,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/97/e5/3074e581b6e8923c4a1f2e42192ea6f390bb52de3600c68baaaed529ef05/azure_keyvault_secrets-4.10.0.tar.gz", hash = "sha256:666fa42892f9cee749563e551a90f060435ab878977c95265173a8246d546a36", size = 129695 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/26/94/7c902e966b28e7cb5080a8e0dd6bffc22ba44bc907f09c4c633d2b7c4f6a/azure_keyvault_secrets-4.10.0-py3-none-any.whl", hash = "sha256:9dbde256077a4ee1a847646671580692e3f9bea36bcfc189c3cf2b9a94eb38b9", size = 125237 },
-]
-
-[[package]]
-name = "azure-storage-blob"
-version = "12.26.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "azure-core" },
-    { name = "cryptography" },
-    { name = "isodate" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/96/95/3e3414491ce45025a1cde107b6ae72bf72049e6021597c201cd6a3029b9a/azure_storage_blob-12.26.0.tar.gz", hash = "sha256:5dd7d7824224f7de00bfeb032753601c982655173061e242f13be6e26d78d71f", size = 583332 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/64/63dbfdd83b31200ac58820a7951ddfdeed1fbee9285b0f3eae12d1357155/azure_storage_blob-12.26.0-py3-none-any.whl", hash = "sha256:8c5631b8b22b4f53ec5fff2f3bededf34cfef111e2af613ad42c9e6de00a77fe", size = 412907 },
 ]
 
 [[package]]
