@@ -16,11 +16,11 @@ class SteamDataset(Dataset):
         )
 
     def get_path(self) -> str:
-        return f"{self.name}.parquet"
+        return f"{self.container}/{self.name}.parquet"
 
 
 owned_games = SteamDataset(
-    name="owned_games",
+    name="owned-games",
     schema=DataFrameSchema(
         {
             "appid": Column(int),
