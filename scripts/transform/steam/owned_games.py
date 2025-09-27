@@ -32,12 +32,7 @@ class TransformSteamOwnedGames(Transform):
             self.input_dataset.read_parquet()
             .rename(self.mapping)
             .explode("tag")
-            .with_columns(
-                pl.col(
-                    "id",
-                    "tag",
-                ).cast(pl.String)
-            )
+            .with_columns(pl.col("id", "tag").cast(pl.String))
             .select(self.output_dataset.schema.columns.keys())
         )
 
