@@ -1,9 +1,9 @@
 from core.api.authentication.api_key import ApiKeyAuthentication
 from core.api.client import ApiClient
-from core.config import settings
 
 from core.endpoint import Endpoint
 from core.logger import get_logger
+from core.utils import get_secret
 
 logger = get_logger(name=__name__)
 
@@ -11,11 +11,11 @@ logger = get_logger(name=__name__)
 class SteamApiClient(ApiClient, ApiKeyAuthentication):
     def __init__(self) -> None:
         ApiClient.__init__(self)
-        ApiKeyAuthentication.__init__(self, api_key=settings.steam_api_key)
+        ApiKeyAuthentication.__init__(self, api_key=get_secret("STEAM-API-KEY"))
 
     def get(self, endpoint: Endpoint, params: dict[str, str]) -> list[dict]:
         data: list = []
-        params = params | {"steamid": settings.steam_id}
+        params = params | {"steamid": get_secret("STEAM-ID")}
         response = self.session.get(
             url=endpoint.url,
             params=params,
