@@ -46,3 +46,6 @@ warn_unused_ignores = true
 strict_equality = true
 no_implicit_optional = true
 plugins = ["pydantic.mypy"]
+
+[tool.ruff]
+line-length = 120

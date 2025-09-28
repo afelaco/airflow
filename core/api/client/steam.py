@@ -12,8 +12,9 @@ logger = get_logger(name=__name__)
 
 class SteamApiClient(ApiClient, ApiKeyAuthentication):
     def __init__(self) -> None:
+        self.steam_id = get_secret("STEAM-ID")
         super().__init__(
-            base_url="https://api.steampowered.com/",
+            base_url="https://api.steampowered.com",
             api_key=get_secret("STEAM-API-KEY"),
         )
 
@@ -22,18 +23,14 @@ class SteamApiClient(ApiClient, ApiKeyAuthentication):
 
     def get(self, endpoint: Endpoint, params: dict[str, str]) -> list[dict[Any, Any]]:
         data: list = []
-        params = params | {"steamid": get_secret("STEAM-ID")}
+        params = params | {"steamid": self.steam_id}
         response = self.session.get(
             url=self.get_url(endpoint=endpoint),
             params=params,
             headers=self.get_auth_headers(),
         )
         response.raise_for_status()
-        data.extend(
-            endpoint.response_model.model_validate_json(response.content).model_dump(
-                by_alias=True
-            )
-        )
+        data.extend(endpoint.response_model.model_validate_json(response.content).model_dump(by_alias=True))
 
         logger.info("%s records read from %s", len(data), response.url)
 
