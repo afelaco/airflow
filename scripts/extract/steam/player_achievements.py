@@ -41,9 +41,7 @@ class ExtractSteamPlayerAchievements(ExtractSteam):
 
     @staticmethod
     def get_played_games() -> pl.DataFrame:
-        return core.dataset.gold.steam.dim_owned_games.read_parquet().filter(
-            pl.col("playtime") > 0
-        )
+        return core.dataset.gold.steam.dim_owned_games.read_parquet().filter(pl.col("playtime") > 0)
 
 
 if __name__ == "__main__":

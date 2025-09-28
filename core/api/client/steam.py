@@ -30,11 +30,7 @@ class SteamApiClient(ApiClient, ApiKeyAuthentication):
             headers=self.get_auth_headers(),
         )
         response.raise_for_status()
-        data.extend(
-            endpoint.response_model.model_validate_json(response.content).model_dump(
-                by_alias=True
-            )
-        )
+        data.extend(endpoint.response_model.model_validate_json(response.content).model_dump(by_alias=True))
 
         logger.info("%s records read from %s", len(data), response.url)
 
