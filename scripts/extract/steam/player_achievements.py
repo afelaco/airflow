@@ -8,7 +8,6 @@ from core.endpoint import Endpoint
 from core.logger import get_logger
 from scripts.extract.steam import ExtractSteam
 
-
 logger = get_logger(name=__name__)
 
 
@@ -45,4 +44,4 @@ class ExtractSteamPlayerAchievements(ExtractSteam):
 
 
 if __name__ == "__main__":
-    data = ExtractSteamPlayerAchievements().get_data()
+    ExtractSteamPlayerAchievements().run()
