@@ -14,3 +14,15 @@ owned_games = BronzeDataset(
         }
     ),
 )
+player_achievements = BronzeDataset(
+    container="steam",
+    name="player-achievements",
+    schema=DataFrameSchema(
+        {
+            "appid": Column(int),
+            "name": Column(str),
+            "playtime_forever": Column(int),
+            "content_descriptorids": Column(list[int], nullable=True),
+        }
+    ),
+)

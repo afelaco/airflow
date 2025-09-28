@@ -6,6 +6,7 @@ from pandera.polars import DataFrameSchema
 import polars as pl
 
 from core.logger import get_logger
+from core.utils import get_secret
 
 logger = get_logger(name=__name__)
 
@@ -20,7 +21,9 @@ class Dataset(ABC):
         "homeautosilversa",
         "homeautogoldsa",
     ]
-    storage_account_key: str
+
+    def __post_init__(self) -> None:
+        self.storage_account_key = get_secret(f"{self.storage_account.upper()}-KEY")
 
     @abstractmethod
     def get_path(self) -> str:

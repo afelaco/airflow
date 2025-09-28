@@ -2,7 +2,12 @@ from datetime import datetime, UTC, timedelta
 
 from airflow.decorators import dag
 
-from dags.steam.task import extract_steam_owned_games, transform_steam_owned_games
+from dags.steam.task import (
+    extract_steam_owned_games,
+    transform_steam_owned_games,
+    load_dim_owned_games,
+    load_fact_owned_games_tags,
+)
 
 
 @dag(
@@ -22,7 +27,11 @@ from dags.steam.task import extract_steam_owned_games, transform_steam_owned_gam
     },
 )
 def steam() -> None:
-    extract_steam_owned_games() >> transform_steam_owned_games()
+    tsog = transform_steam_owned_games()
+
+    extract_steam_owned_games() >> tsog
+    tsog >> load_dim_owned_games()
+    tsog >> load_fact_owned_games_tags()
 
 
 steam()
