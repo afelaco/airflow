@@ -1,2 +1,5 @@
 pre-commit:
-	pre-commit run --all-files
+	uv run pre-commit run --all-files
+
+shfmt:
+	git ls-files '*.sh' | xargs shfmt -i 4 -ci -w
