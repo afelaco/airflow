@@ -14,12 +14,15 @@ def get_secret(secret_name: str) -> Any:
     key_vault_name = "homeauto-kv"
     key_vault_url = f"https://{key_vault_name}.vault.azure.net"
 
-    credential = DefaultAzureCredential()
-    client = SecretClient(
-        vault_url=key_vault_url,
-        credential=credential,
+    value = (
+        SecretClient(
+            vault_url=key_vault_url,
+            credential=DefaultAzureCredential(),
+        )
+        .get_secret(name=secret_name)
+        .value
     )
 
     logger.info("%s read from %s", secret_name, key_vault_url)
 
-    return client.get_secret(name=secret_name).value
+    return value
