@@ -28,6 +28,13 @@ else
 fi
 
 # -----------------------------
+# Login Azure CLI
+# -----------------------------
+echo "➡️ Logging into Azure CLI..."
+az login
+echo "✅ Azure CLI login complete!"
+
+# -----------------------------
 # Syncing virtual environment
 # -----------------------------
 echo "➡️ Syncing virtual environment..."
