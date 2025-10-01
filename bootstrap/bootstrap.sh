@@ -4,8 +4,8 @@ set -euo pipefail
 # -----------------------------
 # Load configuration
 # -----------------------------
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "$REPO_ROOT/bootstrap/.config.sh"
+CDIR="$(git rev-parse --show-toplevel)/bootstrap"
+source "$CDIR/.config.sh"
 
 # -----------------------------
 # Sync system environment with Brewfile
@@ -21,7 +21,7 @@ CURRENT_NAME=$(git config --get user.name)
 CURRENT_EMAIL=$(git config --get user.email)
 
 if [ "$CURRENT_NAME" != "$GIT_NAME" ] || [ "$CURRENT_EMAIL" != "$GIT_EMAIL" ]; then
-    source "modules/git-config.sh"
+    source "$CDIR/modules/git-config.sh"
     echo "✅ Git bootstrap complete!"
 else
     echo "⚠️ Git identity already set."
