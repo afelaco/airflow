@@ -1,12 +1,3 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# -----------------------------
-# Load configuration
-# -----------------------------
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "$REPO_ROOT/bootstrap/.config.sh"
-
 # -----------------------------
 # Set Git identity for the current repository
 # -----------------------------
