@@ -13,7 +13,7 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
 
-    # Ruff
+  # Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.13.2
     hooks:
@@ -26,7 +26,6 @@ repos:
     rev: v1.18.2
     hooks:
       - id: mypy
-        args: [ --config-file=pyproject.toml ]
         additional_dependencies:
           - pydantic
           - types-requests
